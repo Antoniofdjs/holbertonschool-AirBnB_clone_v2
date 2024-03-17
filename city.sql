@@ -1,11 +1,8 @@
 CREATE TABLE city (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  state_id INT NOT NULL,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    id VARCHAR(255) PRIMARY KEY,
+    updated_at DATETIME,
+    created_at DATETIME,
+    state_id VARCHAR(255),
+    name VARCHAR(255),
+    FOREIGN KEY (state_id) REFERENCES state(id)
 );
-
-CREATE FOREIGN KEY city_state_fk
-ON city (state_id)
-REFERENCES state (id);
