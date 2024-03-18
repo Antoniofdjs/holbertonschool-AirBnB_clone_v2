@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Console Module """
+""" Console Module BACKUP VERSION """
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -115,54 +115,36 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """
-            Create an object of any class
-            Future use example...
-            Usage: create <classname> <att_name>=<"att_value">
-            Example: create State name="California" weather="Hot"
-            Possible idea is to make a dict of this and send it to update
-            after creating the object
-        """
-
+        """Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-
-        args = args.partition(" ")
-        if args[0] not in HBNBCommand.classes:
+        else:
+            all_args = args.split()
+            class_nm = all_args[0]
+        if class_nm not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        new_instance = HBNBCommand.classes[args[0]]()
-        new_instance.save()
-
-        if args[2]:
-            class_name = args[0]
-            id = new_instance.id
-            parameters = args[2]
-            parameters = parameters.split(" ")[:]
-
-            for parameter in parameters:
-                att_name = parameter.partition("=")[0]  # name
-                sign = parameter.partition("=")[1]  # =
-                att_value = parameter.partition("=")[2]  # "Antonio"
-
-                if sign and att_value:
-                    if att_value.startswith('\"') and\
-                            not att_value.endswith('\"'):
-                        pass
-
-                    elif not att_value.startswith('\"') and\
-                            att_value.endswith('\"'):
-                        pass
-
-                    else:
-                        att_value = att_value.replace('_', ' ')
-                        update_str = " ".join(
-                            [class_name, id, att_name, att_value])
-                        self.do_update(update_str)
-
+        if len(all_args) > 0:
+            params_dict = {}
+            params = all_args[1:]
+            for param in params:
+                param = param.partition("=")
+                key = param[0]
+                value = param[2]
+                if ('"') in value:
+                    value = value.replace('_', ' ')
+                    value = value.replace('"', '')
+                elif ('.') in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                params_dict[key] = value
+        new_instance = HBNBCommand.classes[class_nm](**params_dict)
         print(new_instance.id)
+        storage.new(new_instance)
+        storage.save()  # Commit changes to the database
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -245,12 +227,16 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    list_to_print.append(str(v))
+
+            # Retrieve objects from the database using DBStorage
+            objects = storage.all(HBNBCommand.classes[args])
+            for obj in objects.values():
+                list_to_print.append(str(obj))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                list_to_print.append(str(v))
+            # Retrieve all objects from the database using DBStorage
+            objects = storage.all()
+            for obj in objects.values():
+                list_to_print.append(str(obj))
 
         print(list_to_print)
 
@@ -354,7 +340,6 @@ class HBNBCommand(cmd.Cmd):
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
-
         new_dict.save()  # save updates to file
 
     def help_update(self):
