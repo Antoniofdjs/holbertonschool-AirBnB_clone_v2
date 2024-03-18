@@ -1,15 +1,4 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
-
-from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
-from models.base_model import BaseModel, Base
-
-class State(BaseModel, Base):
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete", backref="state")
-=======
 """BACKUP VERSION"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
@@ -42,4 +31,3 @@ class State(BaseModel, Base):
                 if self.id == city.state_id:
                     st_cities.append(city)
             return st_cities
->>>>>>> master

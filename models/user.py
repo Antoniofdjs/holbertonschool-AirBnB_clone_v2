@@ -3,10 +3,6 @@
 
 from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
-<<<<<<< HEAD
-from sqlalchemy.orm import relationship
-=======
->>>>>>> master
 
 class User(BaseModel, Base):
     __tablename__ = 'users'
@@ -15,8 +11,3 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128))
     last_name = Column(String(128))
-<<<<<<< HEAD
-    
-    places = relationship("Place", back_populates="user", cascade="all, delete-orphan")
-=======
->>>>>>> master
