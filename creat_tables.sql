@@ -14,4 +14,8 @@ CREATE TABLE cities (
   PRIMARY KEY (id),
   KEY state_id (state_id),
   CONSTRAINT fk_state_id FOREIGN KEY (state_id) REFERENCES states (id)
+<<<<<<< HEAD
   );
+=======
+  );
+>>>>>>> master
