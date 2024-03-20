@@ -1,5 +1,6 @@
+
 #!/usr/bin/python3
-""" Console Module BACKUP VERSION """
+""" Console Module """
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -10,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from os import getenv
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,36 +117,80 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object of any class"""
+        """
+            Create an object of any class
+            Future use example...
+            Usage: create <classname> <att_name>=<"att_value">
+            Example: create State name="California" weather="Hot"
+            Possible idea is to make a dict of this and send it to update
+            after creating the object
+        """
+        import uuid
+        from datetime import datetime
+        att_dict = {}
+
         if not args:
             print("** class name missing **")
             return
-        else:
-            all_args = args.split()
-            class_nm = all_args[0]
-        if class_nm not in HBNBCommand.classes:
+
+        args = args.partition(" ")
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if len(all_args) > 0:
-            params_dict = {}
-            params = all_args[1:]
-            for param in params:
-                param = param.partition("=")
-                key = param[0]
-                value = param[2]
-                if ('"') in value:
-                    value = value.replace('_', ' ')
-                    value = value.replace('"', '')
-                elif ('.') in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                params_dict[key] = value
-        new_instance = HBNBCommand.classes[class_nm](**params_dict)
-        print(new_instance.id)
-        storage.new(new_instance)
-        storage.save()  # Commit changes to the database
 
+        #  Parameters after the name class example, State <par1>  <pa2>
+        if args[2]:
+            parameters = args[2]
+            parameters = parameters.split(" ")[:]
+            id = str(uuid.uuid4())
+            
+            #  The init of BaseModel doesnt make these values when **kwargs
+            att_dict['id'] = id
+
+            if getenv("HBNB_TYPE_STORAGE") == "db":
+                att_dict['created_at'] = datetime.utcnow().isoformat()
+                att_dict['updated_at'] = datetime.utcnow().isoformat()
+            # Else is file storage(json)
+            else:
+                att_dict['created_at'] = datetime.now().isoformat()
+                att_dict['updated_at'] = datetime.now().isoformat()
+
+            att_dict['__class__'] = str(args[0])
+
+            for parameter in parameters:
+                att_name = parameter.partition("=")[0]  # name
+                sign = parameter.partition("=")[1]  # =
+                att_value = parameter.partition("=")[2]  # "Antonio"
+
+                if sign and att_value:
+                    # Validate user to put strings like this "this string"
+                    if att_value.startswith('\"') and\
+                            not att_value.endswith('\"'):
+                        pass
+
+                    elif not att_value.startswith('\"') and\
+                            att_value.endswith('\"'):
+                        pass
+
+                    else:
+                        # Change _ for white spaces
+                        att_value = att_value.replace('_', ' ')
+                        if '"' in att_value:
+                            # Eliminate quotes
+                            att_value = att_value[1:-1]
+                            att_value = str(att_value)
+                        
+                        elif '.' in att_value:
+                            att_value = float(att_value)
+                        else:
+                            att_value = int(att_value)
+
+                    att_dict[att_name] = att_value
+
+        new_instance = HBNBCommand.classes[args[0]](**att_dict)
+
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -221,22 +267,19 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         list_to_print = []
-
+        # still need to eliminate the _sa_instance from here
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]  # remove possible trailing args  
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-
-            # Retrieve objects from the database using DBStorage
-            objects = storage.all(HBNBCommand.classes[args])
-            for obj in objects.values():
-                list_to_print.append(str(obj))
+            for k, v in storage.all(self.classes[args]).items():
+                if k.split('.')[0] == args:
+                    list_to_print.append(str(v))
         else:
-            # Retrieve all objects from the database using DBStorage
-            objects = storage.all()
-            for obj in objects.values():
-                list_to_print.append(str(obj))
+            #  If only all
+            for k, v in storage.all().items():
+                list_to_print.append(str(v))
 
         print(list_to_print)
 
@@ -340,6 +383,7 @@ class HBNBCommand(cmd.Cmd):
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
+
         new_dict.save()  # save updates to file
 
     def help_update(self):
