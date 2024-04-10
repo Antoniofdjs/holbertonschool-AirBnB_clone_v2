@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+import sys
+sys.path.append('c:\\Users\\Anton\\holberton_folder\\holbertonschool-AirBnB_clone_v2')
 from flask import Flask
 from flask import render_template
 from models import storage
