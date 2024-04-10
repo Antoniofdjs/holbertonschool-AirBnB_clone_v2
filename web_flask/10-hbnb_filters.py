@@ -42,7 +42,7 @@ def display_number(n):
     if n.isdigit():
         return(render_template('5-number.html', number=n))
     else:
-        return '404 not found'
+        return render_template('error.html', status_msg = 'Invalid digit not integer')
 
 @app.route('/number_odd_or_even/<n>', strict_slashes=False)
 def display_even_odd(n):
@@ -53,7 +53,7 @@ def display_even_odd(n):
             n_type = 'even'
         return(render_template('6-number_odd_or_even.html', number=n, number_type=n_type))
     else:
-        return '404 not found'
+        return render_template('error.html', status_msg = 'Digit not valid, need integer')
 
 @app.route('/states_list', strict_slashes=False)
 def display_states():
@@ -78,7 +78,7 @@ def find_state(id=None):
             if state.id == id:
                 return render_template('9-states.html', state = state)
         # id did not match from database
-        return ("Not Found")
+        return render_template('error.html')
     else:
         # No id was put, return all states
         return render_template('9-states.html', states = states)
@@ -86,6 +86,12 @@ def find_state(id=None):
 @app.teardown_appcontext
 def teardown(exception=None):
     storage.close()
+
+# Assuming the error handler is registered with the decorator
+@app.errorhandler(404)
+def not_found_error(e):
+    return render_template('error.html', status_msg = str(e)), 404
+
 
 @app.route('/hbnb_filters')
 def display_filter_search():
