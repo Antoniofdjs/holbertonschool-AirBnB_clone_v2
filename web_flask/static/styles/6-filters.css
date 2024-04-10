@@ -89,6 +89,8 @@
   flex-direction: column;
   padding-bottom: 2rem;
   z-index: 2;
+  overflow-y: auto;
+  max-height: 300px;
 }
 
 .locations .popover,

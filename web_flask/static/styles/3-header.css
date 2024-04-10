@@ -8,7 +8,7 @@ header {
 }
 
 .logo {
-  background-image: url(/web_flask/static/images/logo.png);
+  background-image: url(/static/images/logo.png);
   background-repeat: no-repeat;
   background-position: left;
   width: 100%;
