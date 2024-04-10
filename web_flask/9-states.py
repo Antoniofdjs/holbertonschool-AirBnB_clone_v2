@@ -77,9 +77,15 @@ def find_state(id=None):
         for state in states:
             if state.id == id:
                 return render_template('9-states.html', state = state)
+        # id did not match from database
         return ("Not Found")
     else:
+        # No id was put, return all states
         return render_template('9-states.html', states = states)
+
+@app.teardown_appcontext
+def teardown(exception):
+    storage.close()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
