@@ -45,7 +45,7 @@ def python_display(text="is cool"):
     return f"Python {text}"
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def int_display(n):
     '''
         prints number <n>
@@ -56,15 +56,13 @@ def int_display(n):
         return '404 not found'
 
 
-@app.route('/number_template/<n>')
+@app.route('/number_template/<int:n>')
 def display_number(n):
     '''
         Renders template and also number <n> is sent
     '''
-    if n.isdigit():
+    if isinstance(n, int):
         return (render_template('5-number.html', number=n))
-    else:
-        return '404 not found'
 
 
 if __name__ == '__main__':
