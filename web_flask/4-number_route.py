@@ -52,8 +52,6 @@ def int_display(n):
     '''
     if n.isdigit():
         return f'{n} is a number'
-    else:
-        return '404 not found'
 
 
 if __name__ == '__main__':
