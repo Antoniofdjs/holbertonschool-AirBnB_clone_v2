@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+    Flask app
+'''
 from flask import Flask
 
 
