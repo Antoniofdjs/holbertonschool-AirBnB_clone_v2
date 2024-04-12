@@ -1,67 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
+<!DOCTYPE HTML>
+<HTML lang="en">
+  <HEAD>
+    <META charset="UTF-8" />
+    <META name="viewport" content="width=device-width, initial-scale=1.0" />
+    <LINK
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/3-common.css') }}"
     />
-    <link
+    <LINK
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/3-footer.css') }}"
     />
-    <link
+    <LINK
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/3-header.css') }}"
     />
-    <link
+    <LINK
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/6-filters.css') }}"
     />
-    <link
+    <LINK
       rel="icon"
       type="image/x-icon"
       href="{{ url_for('static', filename='images/icon.ico') }}"
     />
-    <title>Airbnb clone</title>
-  </head>
-  <body>
-    <header>
-      <div class="logo"></div>
-    </header>
-    <div class="container">
-      <section class="filters">
+    <TITLE>Airbnb clone</TITLE>
+  </HEAD>
+  <BODY>
+    <HEADER>
+      <DIV class="logo"></DIV>
+    </HEADER>
+    <DIV class="container">
+      <SECTION class="filters">
         <!-- Container 'locations' header section for states and cities title -->
-        <div class="locations">
-          <h3>States</h3>
-          <h4>&nbsp;</h4>
+        <DIV class="locations">
+          <H3>States</H3>
+          <H4>&nbsp;</H4>
           <!-- Popover is container for the scroll section to display states and cities -->
-          <ul class="popover">
+          <UL class="popover">
             {% for state in states %}
-            <li>
-              <h2>{{ state.name }}</h2>
+            <LI>
+              <H2>{{ state.name }}</H2>
                 {% for city in state.cities|sort(attribute='name') %}
-                <li class="list-text">{{ city.name }}</li>
+                <LI class="list-text">{{ city.name }}</LI>
                 {% endfor %}
-            </li>
+            </LI>
             {% endfor %}
-          </ul>
+          </UL>
           <!-- End popover container -->
-        </div>
+        </DIV>
         <!-- End locations container div -->
-        <div class="amenities">
-          <h3>Amenities</h3>
-          <h4>&nbsp;</h4>
-          <ul class="popover">
+        <DIV class="amenities">
+          <H3>Amenities</H3>
+          <H4>&nbsp;</H4>
+          <UL class="popover">
             {% for amenity in amenities|sort(attribute='name') %}
-            <li class="list-text">{{ amenity.name }}</li>
+            <LI class="list-text">{{ amenity.name }}</LI>
             {% endfor %}
-          </ul>
-        </div>
-        <button class="search-button">Search</button>
-      </section>
-    </div>
-    <footer>Holberton School</footer>
-  </body>
-</html>
+          </UL>
+        </DIV>
+        <BUTTON class="search-button">Search</BUTTON>
+      </SECTION>
+    </DIV>
+    <FOOTER>Holberton School</FOOTER>
+  </BODY>
+</HTML>
