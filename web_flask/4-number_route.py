@@ -50,7 +50,7 @@ def int_display(n):
     '''
         prints number <n>
     '''
-    if n.isdigit():
+    if isinstance(n, int):
         return f'{n} is a number'
 
 
