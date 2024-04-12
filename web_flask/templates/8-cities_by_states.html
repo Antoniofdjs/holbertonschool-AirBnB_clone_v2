@@ -7,19 +7,17 @@
     <H1>States</H1>
     <UL>
       {% if states %}
-      {% for state in states %}
-      <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
-      {% if state.cities %}
-      {% for city in state.cities|sort(attribute='name') %}
-      <UL>
-        <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-      </UL>
-      {% endfor %}
-      {% endif %}
-      <UL></UL>
-      {% endfor %}
+        {% for state in states %}
+          <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
+          {% if state.cities %}
+            {% for city in state.cities|sort(attribute='name') %}
+              <UL>
+                <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+              </UL>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
       {% endif %}
     </UL>
   </BODY>
 </HTML>
-
