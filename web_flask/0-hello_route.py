@@ -1,12 +1,17 @@
 #!/usr/bin/python3
+'''
+    Script that starts app
+'''
 from flask import Flask
-from flask import render_template
 
 app = Flask(__name__)
 
 # Route to display "Hello HBNB!"
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
+    '''
+        hello route
+    '''
     return 'Hello HBNB!'
 
 if __name__ == '__main__':
