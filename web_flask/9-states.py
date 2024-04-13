@@ -120,7 +120,7 @@ def find_state(id=None):
             if state.id == id:
                 return render_template('9-states.html', state=state)
         # id did not match from database
-        return ("Not Found")
+        return render_template('9-states.html')
     else:
         # No id was put, return all states
         return render_template('9-states.html', states=states)
