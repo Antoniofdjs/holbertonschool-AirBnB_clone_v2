@@ -12,15 +12,17 @@
       {% endfor %}
     </UL>
     {% else %}
-    {% if state %}
-    <H1>State: {{state.name}}</H1>
-    <H3>Cities</H3>
-    <UL>
-      {% for city in state.cities|sort(attribute='name') %}
-      <LI>{{city.id}}: <B>{{city.name}}</B></LI>
+      {% if state %}
+        <H1>State: {{state.name}}</H1>
+        <H3>Cities</H3>
+        <UL>
+          {% for city in state.cities|sort(attribute='name') %}
+            <LI>{{city.id}}: <B>{{city.name}}</B></LI>
+          {% endfor %}
+        </UL>
+      {% else %}
+        <H1>Not found!</H1>
       {% endif %}
-      {% endfor %}
-    </UL>
     {% endif %}
   </BODY>
 </HTML>
